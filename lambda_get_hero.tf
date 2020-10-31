@@ -1,18 +1,18 @@
-resource "aws_lambda_permission" "apigw_get_heroes" {
+resource "aws_lambda_permission" "apigw_get_hero" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.get_heroes.function_name
+  function_name = aws_lambda_function.get_hero.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.marvel.execution_arn}/*/*/*"
 }
 
-resource "aws_lambda_function" "get_heroes" {
-  function_name = "marvel-get-heroes"
+resource "aws_lambda_function" "get_hero" {
+  function_name = "marvel-get-hero"
   s3_bucket     = aws_s3_bucket.marvel.id
   s3_key        = "lambda-template.zip"
   role          = aws_iam_role.lambda_iam.arn
-  handler       = "heroes/controllers/get-heroes.handler"
+  handler       = "heroes/controllers/get-hero.handler"
   layers        = [aws_lambda_layer_version.marvel_lambda_layer.arn]
   runtime       = "nodejs12.x"
 
