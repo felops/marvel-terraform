@@ -12,9 +12,10 @@ resource "aws_lambda_permission" "apigw_lambda" {
 resource "aws_lambda_function" "get_heroes" {
   function_name = "get-heroes"
   s3_bucket     = aws_s3_bucket.marvel.id
-  s3_key        = "get-heroes.zip"
+  s3_key        = "lambda-template.zip"
   role          = aws_iam_role.lambda_iam.arn
-  handler       = "controllers/get-heroes.handler"
+  handler       = "heroes/controllers/get-heroes.handler"
+  layers        = [aws_lambda_layer_version.marvel_lambda_layer.arn]
   runtime       = "nodejs12.x"
 
   environment {
